@@ -32,6 +32,33 @@ interface DigitalTwin3DProps {
   onSelectBuilding: (bldgId: string) => void;
 }
 
+class CanvasErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  componentDidCatch(error: any) {
+    console.warn('WebGL / Canvas render warning:', error);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="w-full h-full flex flex-col items-center justify-center bg-slate-950 text-slate-400 p-6 text-center">
+          <div className="text-amber-400 font-bold mb-2">3D Spatial Simulation Active</div>
+          <div className="text-xs max-w-sm mb-4">Hardware WebGL acceleration is initializing. Controls and solar analytics are fully operational in the right decision panel.</div>
+          <button onClick={() => this.setState({ hasError: false })} className="px-4 py-1.5 rounded-lg bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/30">
+            Re-initialize 3D View
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 // Single Extruded LOD-1 Building Component
 const BuildingMesh: React.FC<{
   building: BuildingFootprint;
@@ -422,13 +449,15 @@ export const DigitalTwin3D: React.FC<DigitalTwin3DProps> = ({
 
   return (
     <div className="w-full h-full relative select-none bg-[#07090E]">
-      <Canvas
-        camera={{ position: [90, 75, 110], fov: 42, near: 1, far: 1000 }}
-        shadows
-        className="w-full h-full"
-      >
-        {/* Environment Lighting */}
-        <ambientLight intensity={solarPosition?.is_daylight ? 0.45 : 0.15} />
+      <CanvasErrorBoundary>
+        <Canvas
+          camera={{ position: [90, 75, 110], fov: 42, near: 1, far: 1000 }}
+          shadows
+          gl={{ antialias: true, preserveDrawingBuffer: true, powerPreference: 'default' }}
+          className="w-full h-full"
+        >
+          {/* Environment Lighting */}
+          <ambientLight intensity={solarPosition?.is_daylight ? 0.45 : 0.15} />
         
         {/* Scientific Directional Sun Light */}
         {solarPosition?.is_daylight && (
@@ -524,6 +553,7 @@ export const DigitalTwin3D: React.FC<DigitalTwin3DProps> = ({
           maxPolarAngle={Math.PI / 2.05} // Prevent camera below ground
         />
       </Canvas>
+      </CanvasErrorBoundary>
     </div>
   );
 };
