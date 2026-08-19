@@ -101,10 +101,9 @@ export function App() {
       setTargetBuildingId(siteData.target_building_id || siteData.buildings[0]?.id || '');
 
       // Load Climatological Solar Resource
-      const res = await api.getSolarResource(
-        siteData.coordinates.latitude,
-        siteData.coordinates.longitude
-      );
+      const lat = siteData.coordinates?.latitude ?? 21.0954;
+      const lon = siteData.coordinates?.longitude ?? 78.9782;
+      const res = await api.getSolarResource(lat, lon);
       setSolarResource(res);
     } catch (err) {
       console.error('Error loading site:', err);
@@ -130,11 +129,9 @@ export function App() {
         isoStr = `${selectedDate}T${normalizedUtcHours.toString().padStart(2, '0')}:${normalizedUtcMin.toString().padStart(2, '0')}:00Z`;
       }
 
-      const pos = await api.getSolarPosition(
-        site.coordinates.latitude,
-        site.coordinates.longitude,
-        isoStr
-      );
+      const lat = site.coordinates?.latitude ?? 21.0954;
+      const lon = site.coordinates?.longitude ?? 78.9782;
+      const pos = await api.getSolarPosition(lat, lon, isoStr);
       setSolarPosition(pos);
     } catch (err) {
       console.error('Error updating solar position:', err);

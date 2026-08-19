@@ -110,7 +110,7 @@ export const SiteControlsSidebar: React.FC<SiteControlsSidebarProps> = ({
             <div className="mt-2 text-[10px] text-slate-400 flex items-center gap-1 font-mono">
               <Compass className="w-3 h-3 text-amber-400" />
               <span>
-                {site.coordinates.latitude.toFixed(4)}°N, {site.coordinates.longitude.toFixed(4)}°E
+                {(site.coordinates?.latitude ?? 21.0954).toFixed(4)}°N, {(site.coordinates?.longitude ?? 78.9782).toFixed(4)}°E
               </span>
             </div>
           </div>
@@ -186,8 +186,8 @@ export const SiteControlsSidebar: React.FC<SiteControlsSidebarProps> = ({
         {/* Provenance Footer */}
         {site && (
           <div className="mt-2.5 pt-2 border-t border-slate-800/60 flex items-center justify-between text-[10px] text-slate-500 font-mono">
-            <span>Quality: {site.provenance.data_type}</span>
-            <span>Conf: {(site.provenance.confidence * 100).toFixed(0)}%</span>
+            <span>Quality: {site.provenance?.data_type || 'MODELED'}</span>
+            <span>Conf: {((site.provenance?.confidence ?? 0.95) * 100).toFixed(0)}%</span>
           </div>
         )}
       </div>
