@@ -21,7 +21,9 @@ import type {
   BuildingFootprint,
 } from '../types';
 
-const API_BASE = 'http://127.0.0.1:8000/api';
+const API_BASE = typeof window !== 'undefined' && window.location.hostname === 'localhost' && window.location.port === '5173'
+  ? 'http://127.0.0.1:8000/api'
+  : '/api';
 
 async function handleResponse<T>(res: Response): Promise<T> {
   if (!res.ok) {
