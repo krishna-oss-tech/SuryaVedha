@@ -4,9 +4,9 @@
   "version": "2.4.0",
   "type": "module",
   "scripts": {
-    "dev": "node ./frontend/node_modules/vite/bin/vite.js frontend",
-    "build": "node ./frontend/node_modules/vite/bin/vite.js build frontend --outDir ../dist",
-    "preview": "node ./frontend/node_modules/vite/bin/vite.js preview"
+    "dev": "vite frontend",
+    "build": "vite build frontend --outDir dist",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@react-three/drei": "^10.0.8",
