@@ -1,6 +1,6 @@
 {
-  "buildCommand": "vite build frontend --outDir ../dist",
-  "outputDirectory": "dist",
+  "buildCommand": "cd frontend && npm run build",
+  "outputDirectory": "frontend/dist",
   "rewrites": [
     {
       "source": "/api/(.*)",
