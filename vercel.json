@@ -1,7 +1,6 @@
 {
-  "installCommand": "npm install --legacy-peer-deps --prefix frontend",
-  "buildCommand": "npm run build --prefix frontend",
-  "outputDirectory": "frontend/dist",
+  "buildCommand": "vite build frontend --outDir ../dist",
+  "outputDirectory": "dist",
   "rewrites": [
     {
       "source": "/api/(.*)",
